@@ -6,11 +6,11 @@
     chrome.runtime.sendMessage({ type: 'registerChart' });
     chrome.runtime.onMessage.addListener(m => {
       if (m.type !== 'navigateToken') return;
-      // GMGN uses Next.js — use window.location to navigate.
-      // To avoid full page reload flash, use location.assign() 
-      // which reuses the same tab without creating history bloat
       const url = 'https://gmgn.ai/' + m.chain + '/token/' + m.address;
-      window.location.assign(url);
+      // Use History API to navigate without full page reload
+      // GMGN is Next.js — pushState + popstate triggers the router re-render
+      window.history.pushState({}, '', url);
+      window.dispatchEvent(new PopStateEvent('popstate'));
     });
   }
 
