@@ -11,7 +11,7 @@
       const l = e.target.closest('a[href*="/token/"]');
       if (!l) return;
       const h = l.getAttribute('href') || '';
-      const m = h.match(/\/(sol|bsc|eth|base)\/token\/([A-Za-z0-9]+)/);
+      const m = h.match(/\/(sol|bsc|eth|base|robinhood)\/token\/([A-Za-z0-9]+)/);
       if (!m) return;
       e.preventDefault();
       e.stopPropagation();
