@@ -7,10 +7,14 @@
     chrome.runtime.onMessage.addListener(m => {
       if (m.type !== 'navigateToken') return;
       const url = 'https://gmgn.ai/' + m.chain + '/token/' + m.address;
-      // Use History API to navigate without full page reload
-      // GMGN is Next.js — pushState + popstate triggers the router re-render
-      window.history.pushState({}, '', url);
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      // Create a temporary anchor and click it — Next.js router intercepts
+      // the click and does client-side navigation (no full reload)
+      const a = document.createElement('a');
+      a.href = url;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     });
   }
 
