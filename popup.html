@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 360px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0a0a0b;
+    color: #e0e0e0;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .header-text span {
+    font-size: 11px;
+    color: #555;
+    font-weight: 500;
+  }
+
+  /* ── Status Banner ── */
+  .banner {
+    margin: 14px 16px 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  .banner.connected {
+    background: rgba(0,200,83,0.08);
+    border: 1px solid rgba(0,200,83,0.15);
+    color: #00e676;
+  }
+  .banner.disconnected {
+    background: rgba(255,82,82,0.08);
+    border: 1px solid rgba(255,82,82,0.15);
+    color: #ff5252;
+  }
+  .banner .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .banner.connected .dot { background: #00e676; box-shadow: 0 0 6px #00c853; }
+  .banner.disconnected .dot { background: #ff5252; }
+
+  /* ── Content ── */
+  .content { padding: 16px 16px 18px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+
+  .input-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .input-wrap input {
+    width: 100%;
+    padding: 10px 38px 10px 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    background: #121214;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-wrap input:focus { border-color: rgba(0,200,83,0.4); }
+  .input-wrap input::placeholder { color: #3a3a3a; }
+  .toggle-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px;
+    transition: color 0.2s;
+    width: auto;
+  }
+  .toggle-eye:hover { color: #888; background: none; }
+
+  button.primary {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+    color: #000;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+  button.primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  button.primary:active { transform: translateY(0); }
+  button.primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
+  /* ── Token Purpose ── */
+  .purpose {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(0,200,83,0.04);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .purpose h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .purpose p {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.6;
+  }
+  .purpose p b { color: #ccc; }
+  .purpose .highlight {
+    color: #00e676;
+    font-weight: 600;
+  }
+
+  /* ── Instructions ── */
+  .instructions {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .instructions h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00c853;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+  }
+  .step-text a {
+    color: #00e676;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .step-text a:hover { text-decoration: underline; }
+  .step-text code {
+    background: rgba(255,255,255,0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #ccc;
+    font-family: 'SF Mono', 'Cascadia Code', monospace;
+  }
+
+  /* ── Features ── */
+  .features {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #666;
+  }
+  .feature-icon { font-size: 13px; }
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">𝕏</div>
+    <div class="header-text">
+      <h1>TrackerX <span style="color:#555;font-weight:500;font-size:12px">YODA TOOLS</span></h1>
+      <span>Extension v2.2</span>
+    </div>
+  </div>
+
+  <!-- Status Banner -->
+  <div class="banner disconnected" id="banner">
+    <div class="dot"></div>
+    <span id="banner-text">Não conectado</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="section-label">JWT Token</div>
+    <div class="input-wrap">
+      <input type="password" id="token" placeholder="Cole seu token aqui...">
+      <button class="toggle-eye" id="toggleEye" title="Mostrar/ocultar">👁</button>
+    </div>
+    <button class="primary" id="save">Conectar</button>
+
+    <!-- Token Purpose -->
+    <div class="purpose">
+      <h3>Para que serve o token?</h3>
+      <p>
+        O token conecta a extensão à sua conta no <b>TrackerX</b>. Com ele, ao clicar no <span class="highlight">+</span> de um handle no <b>GMGN</b>, ele é adicionado automaticamente no <b>TrackerX</b> e no <b>FastSniper</b>.
+      </p>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <h3>Como obter o token</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Acesse <a href="https://trackerx.io" target="_blank">trackerx.io</a> e faça login na sua conta</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Abra o DevTools com <code>F12</code> e vá na aba <code>Console</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">No console, digite: <code>localStorage.trackerx_token</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">Copie <b>todo o valor</b> que aparecer (sem as aspas) e cole acima</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+      <div class="feature"><span class="feature-icon">🚀</span> GMGN SPA routing (zero reload)</div>
+      <div class="feature"><span class="feature-icon">➕</span> Handle do GMGN → TrackerX + FastSniper</div>
+      <div class="feature"><span class="feature-icon">🔗</span> Funciona no TrackerX e FastSniper</div>
+      <div class="feature"><span class="feature-icon">💰</span> Referral automático nos links do FastSniper</div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
